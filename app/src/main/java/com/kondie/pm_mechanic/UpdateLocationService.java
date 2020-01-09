@@ -53,14 +53,14 @@ public class UpdateLocationService extends IntentService {
 
         try {
             prefs = MainActivity.activity.getSharedPreferences("PM_M", Context.MODE_PRIVATE);
-            URL url = new URL(Constants.PM_HOSTING_WEBSITE + "/updateDriverLoc.php");
+            URL url = new URL(Constants.PM_HOSTING_WEBSITE + "/updateMechanicLoc.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
             conn.setDoInput(true);
 
             Uri.Builder builder = new Uri.Builder().appendQueryParameter("userEmail", prefs.getString("userEmail", ""))
-                    .appendQueryParameter("driverEmail", prefs.getString("email", ""))
+                    .appendQueryParameter("mechanicEmail", prefs.getString("email", ""))
                     .appendQueryParameter("lat",  String.valueOf(MainActivity.userLocation.getLatitude()))
                     .appendQueryParameter("lng", String.valueOf(MainActivity.userLocation.getLongitude()));
             String query = builder.build().getEncodedQuery();
@@ -89,8 +89,8 @@ public class UpdateLocationService extends IntentService {
                 if (!result.equals("null")) {
                     JSONObject locOb = new JSONObject(result.toString());
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putFloat("driverLat", (float) locOb.getDouble("lat"));
-                    editor.putFloat("driverLng", (float) locOb.getDouble("lng"));
+                    editor.putFloat("mechanicLat", (float) locOb.getDouble("lat"));
+                    editor.putFloat("mechanicLng", (float) locOb.getDouble("lng"));
                     editor.commit();
                     MainActivity.clientLat = (float) locOb.getDouble("lat");
                     MainActivity.clientLng = (float) locOb.getDouble("lng");
