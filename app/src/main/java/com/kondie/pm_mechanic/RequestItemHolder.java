@@ -88,8 +88,7 @@ public class RequestItemHolder extends RecyclerView.ViewHolder {
         MainActivity.navGoogleMap.addMarker(new MarkerOptions().position(clientLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_user)).title(fname.getText().toString() + " " + lname.getText().toString()));
         MainActivity.navGoogleMap.addMarker(new MarkerOptions().position(shopLatLng).title(makeAndModel.getText().toString()));
 
-        new GetDirections().execute((float) MainActivity.userLocation.getLatitude(), (float) MainActivity.userLocation.getLongitude(), Float.valueOf(shopLat.getText().toString()), Float.valueOf(shopLng.getText().toString()), (float) 0);
-        new GetDirections().execute(Float.valueOf(shopLat.getText().toString()), Float.valueOf(shopLng.getText().toString()), Float.valueOf(lat.getText().toString()), Float.valueOf(lng.getText().toString()), (float) 1);
+        new GetDirections().execute((float) MainActivity.userLocation.getLatitude(), (float) MainActivity.userLocation.getLongitude(), Float.valueOf(lat.getText().toString()), Float.valueOf(lng.getText().toString()), (float) 0);
         MainActivity.showLessOrMoreFunc();
     }
 

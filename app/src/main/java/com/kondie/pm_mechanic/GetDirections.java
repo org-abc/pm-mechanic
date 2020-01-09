@@ -39,7 +39,7 @@ public class GetDirections extends AsyncTask <Float, Void, String> {
             String dest = "destination=" + params[2] + "," + params[3];
             String sensor = "sensor=false";
             String parameters = start + "&" + dest + "&" + sensor;
-            URL url = new URL("https://maps.googleapis.com/maps/api/directions/json?" + parameters + "&key=AIzaSyAlD9l56Dkx3J8KjDFjPfqpboXIoFfwsHY");
+            URL url = new URL("https://maps.googleapis.com/maps/api/directions/json?" + parameters + "&key=" + Constants.GOOGLE_API_KEY);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoInput(true);
             conn.setDoOutput(true);
@@ -119,7 +119,7 @@ public class GetDirections extends AsyncTask <Float, Void, String> {
             CastReceiver.setAlarm(MainActivity.activity);
 
         }catch (Exception e){
-            Toast.makeText(MainActivity.activity, e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.activity, s + e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 }
