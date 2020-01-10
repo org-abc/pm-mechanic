@@ -32,13 +32,13 @@ public class SetAsDelivered  extends AsyncTask<String, Void, String> {
         try {
             prefs = MainActivity.activity.getSharedPreferences("PM_M", Context.MODE_PRIVATE);
             editor = prefs.edit();
-            URL url = new URL(Constants.PM_HOSTING_WEBSITE + "/setOrderAsDelivered.php");
+            URL url = new URL(Constants.PM_HOSTING_WEBSITE + "/setRequestAsResolved.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
-            Uri.Builder builder = new Uri.Builder().appendQueryParameter("orderId", params[0]);
+            Uri.Builder builder = new Uri.Builder().appendQueryParameter("reqId", params[0]);
             String query = builder.build().getEncodedQuery();
 
             OutputStream outStream = conn.getOutputStream();

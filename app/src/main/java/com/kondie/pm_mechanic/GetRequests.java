@@ -139,7 +139,7 @@ public class GetRequests extends AsyncTask<String, Void, String> {
                         }).show();
             }
             else if (MainActivity.requestItems.size() == 0){
-                Toast.makeText(MainActivity.activity, s, Toast.LENGTH_LONG).show();
+//                Toast.makeText(MainActivity.activity, s, Toast.LENGTH_LONG).show();
                 new AlertDialog.Builder(MainActivity.activity).setCancelable(true).setTitle("No orders found")
                         .setPositiveButton("Refresh", new DialogInterface.OnClickListener() {
                             @Override
