@@ -94,7 +94,8 @@ public class MainActivity extends AppCompatActivity
     private LinearLayoutManager linearLayMan;
     public static List<RequestItem> requestItems;
     private PermissionUtils permissionUtils;
-    public static TextView duratuinTxt;
+    public static TextView durationTxt;
+    public static Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity
         editor = prefs.edit();
 
         try {
-            Toolbar toolbar = findViewById(R.id.toolbar);
+            toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             NavigationView navigationView = findViewById(R.id.nav_view);
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity
             showLessOrMoreButt = findViewById(R.id.show_less_or_more_butt);
             orderList = findViewById(R.id.order_list);
             showIcon = findViewById(R.id.show_icon);
-            duratuinTxt = findViewById(R.id.duration_txt);
+            durationTxt = findViewById(R.id.duration_txt);
             SupportMapFragment mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.nav_map_frag);
             mapFrag.getMapAsync(MainActivity.this);
 

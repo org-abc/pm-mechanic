@@ -2,6 +2,7 @@ package com.kondie.pm_mechanic;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SignIn extends AppCompatActivity {
 
     EditText email, password;
-    TextView forgotPassword;
+    TextView forgotPassword, createNewAccButt;
     public static Activity activity;
 
     @Override
@@ -33,10 +34,22 @@ public class SignIn extends AppCompatActivity {
         password = findViewById(R.id.sign_in_pass);
         forgotPassword = findViewById(R.id.forgot_pass_butt);
         TextView signInButton = findViewById(R.id.sign_in_button);
+        createNewAccButt = findViewById(R.id.new_account_button);
 
         signInButton.setOnClickListener(signItIn);
         forgotPassword.setOnClickListener(showDialog);
+        createNewAccButt.setOnClickListener(gotoSignUp);
     }
+
+
+    View.OnClickListener gotoSignUp = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent toSignUpIntent = new Intent(activity, SignUp.class);
+            startActivity(toSignUpIntent);
+        }
+    };
+
 
     private View.OnClickListener showDialog = new View.OnClickListener() {
         @Override

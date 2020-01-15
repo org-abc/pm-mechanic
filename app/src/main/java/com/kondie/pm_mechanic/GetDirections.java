@@ -79,7 +79,7 @@ public class GetDirections extends AsyncTask <Float, Void, String> {
             MarkerOptions markerOptions = new MarkerOptions();
             JSONObject jsonOb = new JSONObject(s);
             String duration = ((JSONObject) ((JSONObject) jsonOb.getJSONArray("routes").get(0)).getJSONArray("legs").get(0)).getJSONObject("duration").getString("text");
-//            MainActivity.durationToDesc.setTitle(duration);
+            MainActivity.toolbar.setTitle(duration);
 
             List<List<HashMap<String, String>>> result = new DirectionsJSONParser().parser(jsonOb);
 
@@ -112,7 +112,7 @@ public class GetDirections extends AsyncTask <Float, Void, String> {
                     RequestItemHolder.duration += duration + " to deliver";
                 }
                 if (RequestItemHolder.duration.contains("and")){
-                    MainActivity.duratuinTxt.setText(RequestItemHolder.duration);
+                    MainActivity.durationTxt.setText(RequestItemHolder.duration);
                 }
             }
             MainActivity.navGoogleMap.addPolyline(lineOptions);

@@ -42,7 +42,7 @@
             android:value="AIzaSyAlD9l56Dkx3J8KjDFjPfqpboXIoFfwsHY" />
 
         <activity android:name=".MainActivity"
-            android:label="Select a order below"
+            android:label="Select a request below"
             android:launchMode="singleTop"></activity>
         <activity android:name=".SignIn"></activity>
         <activity android:name=".WelcomeAct">
@@ -54,6 +54,12 @@
         </activity>
         <activity android:name=".UserProfile"
             android:label="Profile">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+        <activity android:name=".SignUp"
+            android:label="Sign up">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>

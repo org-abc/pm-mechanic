@@ -78,6 +78,18 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center" />
 
+            <TextView
+                android:id="@+id/new_account_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="Create new Account"
+                android:textColor="@color/white"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/go_button_background"
+                android:padding="10dp"/>
+
         </LinearLayout>
 
     </ScrollView>
