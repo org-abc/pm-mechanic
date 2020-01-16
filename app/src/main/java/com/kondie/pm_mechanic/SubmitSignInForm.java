@@ -106,13 +106,18 @@ public class SubmitSignInForm extends AsyncTask<String, Void, String> {
             if (origin.equalsIgnoreCase("login")) {
                 pDialog.dismiss();
             }
-            if (s.equalsIgnoreCase("congrats"))
+
+            if (s.equalsIgnoreCase("active") || s.equalsIgnoreCase("inactive"))
             {
+                if (s.equalsIgnoreCase("active")){
+                    editor.putString("accStatus", "active");
+                }else if (s.equalsIgnoreCase("inactive")){
+                    editor.putString("accStatus", "inactive");
+                }
                 if (origin.equalsIgnoreCase("login")) {
                     Toast.makeText(SignIn.activity, "Done", Toast.LENGTH_SHORT).show();
                     editor.putString("email", email);
                     editor.putString("password", pass);
-                    editor.commit();
                     Intent gotoMain = new Intent(SignIn.activity, MainActivity.class);
                     SignIn.activity.startActivity(gotoMain);
                     SignIn.activity.finish();
@@ -123,6 +128,7 @@ public class SubmitSignInForm extends AsyncTask<String, Void, String> {
                     WelcomeAct.activity.startActivity(gotoMain);
                     WelcomeAct.activity.finish();
                 }
+                editor.commit();
             }
             else if (s.equalsIgnoreCase("sorry") && origin.equalsIgnoreCase("welcome"))
             {

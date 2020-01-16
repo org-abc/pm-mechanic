@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity
     private PermissionUtils permissionUtils;
     public static TextView durationTxt;
     public static Toolbar toolbar;
+    private TextView inactiveDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +191,7 @@ public class MainActivity extends AppCompatActivity
 
     private void setUpOrderList(){
 
+        inactiveDisplay = findViewById(R.id.inactive_display);
         requestItems = new ArrayList<>();
         linearLayMan = new LinearLayoutManager(activity);
         linearLayMan.setOrientation(RecyclerView.VERTICAL);
@@ -197,7 +199,12 @@ public class MainActivity extends AppCompatActivity
         requestItemAdapter = new RequestItemAdapter(activity, requestItems, orderList);
         orderList.setAdapter(requestItemAdapter);
 
-        new GetRequests().execute("5050-00-00 00:00:00");
+        if (prefs.getString("accStatus", "").equals("active")) {
+            new GetRequests().execute("5050-00-00 00:00:00");
+        }
+        else{
+            inactiveDisplay.setVisibility(View.VISIBLE);
+        }
     }
 
     private View.OnClickListener showLessOrMore = new View.OnClickListener() {
@@ -213,7 +220,9 @@ public class MainActivity extends AppCompatActivity
         }
         else{
             orderListLay.startAnimation(coolLoading.getShowMoreAnim());
-            new GetRequests().execute("5050-00-00 00:00:00");
+            if (prefs.getString("accStatus", "").equals("active")) {
+                new GetRequests().execute("5050-00-00 00:00:00");
+            }
         }
     }
 
@@ -406,7 +415,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        new GetRequests().execute("5050-00-00 00:00:00");
+        if (prefs.getString("accStatus", "").equals("active")) {
+            new GetRequests().execute("5050-00-00 00:00:00");
+        }
+        else{
+            inactiveDisplay.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

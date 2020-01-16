@@ -6,13 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <fragment
-        android:id="@+id/nav_map_frag"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        android:layout_marginBottom="40dp"
-        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/nav_map_frag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity"
+            android:layout_marginBottom="40dp"
+            android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+        <TextView
+            android:id="@+id/inactive_display"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="This account\nis\ninactive"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:padding="20dp"
+            android:textColor="@color/white"
+            android:background="#aa000000"
+            android:visibility="gone"/>
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
