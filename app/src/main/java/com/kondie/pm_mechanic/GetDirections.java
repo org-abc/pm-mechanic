@@ -98,22 +98,9 @@ public class GetDirections extends AsyncTask <Float, Void, String> {
                 }
                 lineOptions.addAll(points);
                 lineOptions.width(8);
-                if(reqNum == 0) {
-                    lineOptions.color(Color.RED);
-                    if (!RequestItemHolder.duration.equals("")){
-                        RequestItemHolder.duration += " and ";
-                    }
-                    RequestItemHolder.duration += duration + " to collect";
-                }else{
-                    lineOptions.color(Color.BLUE);
-                    if (!RequestItemHolder.duration.equals("")){
-                        RequestItemHolder.duration += " and ";
-                    }
-                    RequestItemHolder.duration += duration + " to deliver";
-                }
-                if (RequestItemHolder.duration.contains("and")){
-                    MainActivity.durationTxt.setText(RequestItemHolder.duration);
-                }
+                lineOptions.color(Color.BLUE);
+                RequestItemHolder.duration += duration + " away";
+                MainActivity.durationTxt.setText(RequestItemHolder.duration);
             }
             MainActivity.navGoogleMap.addPolyline(lineOptions);
             CastReceiver.setAlarm(MainActivity.activity);
