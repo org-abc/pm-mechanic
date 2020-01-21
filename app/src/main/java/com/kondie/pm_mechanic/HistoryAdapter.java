@@ -77,12 +77,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryHolder> implemen
         HistoryItem item = historyItems.get(position);
 
         try {
-            holder.driverName.setText(item.getDriverName());
-            holder.amount.setText("Total: " + item.getOrderAmount());
-            holder.shop.setText(item.getShopName());
-            holder.deliveryFee.setText("Delivery fee: R" + item.getDeliveryFee());
-            holder.items.setText(item.getOrderName());
-            if (item.getStatus().equals("cancel")){
+            holder.clientName.setText(item.getClientName());
+            holder.serviceFee.setText("Service fee: R" + item.getMinServiceFee());
+            holder.issue.setText(item.getIssue() + " problem");
+            holder.car.setText(item.getCar());
+            if (item.getStatus().equals("cancel") || item.getStatus().equals("canceled")){
                 holder.status.setText("canceled");
                 holder.status.setTextColor(activity.getResources().getColor(R.color.red));
             }else {

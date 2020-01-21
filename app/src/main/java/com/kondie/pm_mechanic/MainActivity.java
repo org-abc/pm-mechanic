@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity
             } else {
                 setUserDrawerInfo((NavigationView) findViewById(R.id.nav_view));
             }
+            setUpOrderList();
         }catch (Exception e){
             Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
         }
@@ -216,13 +217,6 @@ public class MainActivity extends AppCompatActivity
         orderList.setLayoutManager(linearLayMan);
         requestItemAdapter = new RequestItemAdapter(activity, requestItems, orderList);
         orderList.setAdapter(requestItemAdapter);
-
-        if (prefs.getString("accStatus", "").equals("active")) {
-            new GetRequests().execute("5050-00-00 00:00:00");
-        }
-        else{
-            inactiveDisplay.setVisibility(View.VISIBLE);
-        }
     }
 
     private View.OnClickListener showLessOrMore = new View.OnClickListener() {
@@ -296,7 +290,12 @@ public class MainActivity extends AppCompatActivity
                     userLocation = location;
                     CastReceiver.setAlarm(MainActivity.activity);
                     if (requestItems == null) {
-                        setUpOrderList();
+                        if (prefs.getString("accStatus", "").equals("active")) {
+                            new GetRequests().execute("5050-00-00 00:00:00");
+                        }
+                        else{
+                            inactiveDisplay.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             }

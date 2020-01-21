@@ -97,11 +97,11 @@ public class UpdateLocationService extends IntentService {
                     MainActivity.updateLoc();
                 }
             } else {
-                Toast.makeText(this, "conn problems", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "conn problems", Toast.LENGTH_SHORT).show();
             }
 
         } catch (Exception e) {
-            Toast.makeText(this, "Here: " + e.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Here: " + e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 

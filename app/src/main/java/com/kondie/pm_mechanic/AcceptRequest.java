@@ -128,7 +128,7 @@ public class AcceptRequest extends AsyncTask<String, Void, String> {
             }
 
         }catch (Exception e){
-            Toast.makeText(MainActivity.activity, e.toString() + s, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.activity, e.toString() + s, Toast.LENGTH_LONG).show();
         }
     }
 }

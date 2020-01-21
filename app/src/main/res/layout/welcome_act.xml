@@ -7,7 +7,7 @@
         android:id="@+id/welcome_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@color/blue_grey"
+        android:src="@drawable/welcome_wallpeper"
         android:scaleType="centerCrop"/>
 
     <LinearLayout
@@ -26,6 +26,13 @@
             android:textSize="30sp"
             android:fontFamily="sans-serif-smallcaps"
             android:gravity="center_horizontal"/>
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/pm_m_icon_512"
+            android:elevation="4dp"
+            android:layout_margin="20dp"/>
 
         <ProgressBar
             android:layout_width="wrap_content"

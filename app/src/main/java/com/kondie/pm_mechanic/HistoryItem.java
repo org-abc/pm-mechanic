@@ -2,114 +2,88 @@ package com.kondie.pm_mechanic;
 
 public class HistoryItem {
 
-    String driverName, orderDetails, orderAmount, deliveryFee, dateCreated, id, shopName, status, orderName;
-    double lat, lng, shopLat, shopLng;
+    String clientName, minServiceFee, dateCreated, id, status, issue, car, comment;
+    double lat, lng;
 
     public HistoryItem(){}
 
-    public void setDeliveryFee(String deliveryFee) {
-        this.deliveryFee = deliveryFee;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public String getStatus() {
-        return status;
+    public String getComment() {
+        return comment;
     }
 
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
+    public void setIssue(String issue) {
+        this.issue = issue;
     }
 
-    public void setOrderName(String orderName) {
-        this.orderName = orderName;
+    public void setCar(String car) {
+        this.car = car;
     }
 
-    public String getOrderName() {
-        return orderName;
+    public String getCar() {
+        return car;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setShopLat(double shopLat) {
-        this.shopLat = shopLat;
-    }
-
-    public void setShopLng(double shopLng) {
-        this.shopLng = shopLng;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public void setOrderDetails(String orderDetails) {
-        this.orderDetails = orderDetails;
-    }
-
-    public void setOrderAmount(String orderAmount) {
-        this.orderAmount = orderAmount;
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
     public void setLng(double lng) {
         this.lng = lng;
     }
 
-    public void setLat(double lat) {
-        this.lat = lat;
+    public void setMinServiceFee(String minServiceFee) {
+        this.minServiceFee = minServiceFee;
     }
 
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
+    public String getClientName() {
+        return clientName;
     }
 
-
-    public String getDeliveryFee() {
-        return deliveryFee;
+    public String getIssue() {
+        return issue;
     }
 
-    public double getShopLat() {
-        return shopLat;
-    }
-
-    public String getShopName() {
-        return shopName;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public double getShopLng() {
-        return shopLng;
-    }
-
-    public String getDateCreated() {
-        return dateCreated;
-    }
-
-    public String getOrderDetails() {
-        return orderDetails;
-    }
-
-    public String getOrderAmount() {
-        return orderAmount;
-    }
-
-    public double getLng() {
-        return lng;
+    public String getStatus() {
+        return status;
     }
 
     public double getLat() {
         return lat;
     }
 
-    public String getDriverName() {
-        return driverName;
+    public double getLng() {
+        return lng;
     }
 
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public String getMinServiceFee() {
+        return minServiceFee;
+    }
+
+    public String getId() {
+        return id;
+    }
 }

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ public class GetHistory extends AsyncTask<String, Void, String> {
         try {
             prefs = HistoryAct.activity.getSharedPreferences("PM_M", Context.MODE_PRIVATE);
             editor = prefs.edit();
-            URL url = new URL(Constants.PM_HOSTING_WEBSITE + "/getDriverHistory.php");
+            URL url = new URL(Constants.PM_HOSTING_WEBSITE + "/getMechanicHistory.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
@@ -96,61 +97,38 @@ public class GetHistory extends AsyncTask<String, Void, String> {
         try{
             progressDialog.dismiss();
             JSONObject allDAta = new JSONObject(s);
-            String ordersString = allDAta.getString("orders");
+            String requestsString = allDAta.getString("requests");
             String userString = allDAta.getString("users");
-            String shopsString = allDAta.getString("shops");
-            String itemsString = allDAta.getString("items");
 
-            JSONArray ordersArr = new JSONArray(ordersString);
+            JSONArray requestsArr = new JSONArray(requestsString);
             JSONArray userArr = new JSONArray(userString);
-            JSONArray shopsArr = new JSONArray(shopsString);
-            JSONArray itemsArr = new JSONArray(itemsString);
 
-            for(int c=0; c<ordersArr.length(); c++){
+            for(int c=0; c<requestsArr.length(); c++){
 
                 HistoryItem item = new HistoryItem();
-                JSONObject order = ordersArr.getJSONObject(c);
+                JSONObject request = requestsArr.getJSONObject(c);
                 try{
                     JSONObject user = userArr.getJSONObject(c);
-                    item.setDriverName(user.getString("fname") + " " + user.getString("lname"));
+                    item.setClientName(user.getString("fname") + " " + user.getString("lname"));
                 }catch (Exception e){
-                    item.setDriverName("None");
+                    item.setClientName("None");
                 }
-                item.setOrderAmount(order.getString("amount"));
-                item.setOrderDetails(order.getString("order_details"));
-                item.setDateCreated(order.getString("date_created"));
-                item.setStatus(order.getString("status"));
-                item.setId(String.valueOf(order.getInt("id")));
-                item.setDeliveryFee(String.valueOf(order.getDouble("delivery_fee")));
-
-                String orderName = "";
-                JSONArray detailsArr = new JSONArray(order.getString("order_details"));
-                for (int j=0; j<detailsArr.length(); j++) {
-                    JSONObject detailsObj = detailsArr.getJSONObject(j);
-                    for (int i=0; i<itemsArr.length(); i++){
-                        JSONObject itemObj = itemsArr.getJSONObject(i);
-                        if (detailsObj.getString("itemId").equals(String.valueOf(itemObj.getInt("id")))) {
-                            orderName += detailsObj.getString("quantity") + " " + itemObj.getString("name") + " (R" + itemObj.getDouble("price") + ")";
-                            orderName += (i != itemsArr.length() - 1) ? ", " : "";
-                            break;
-                        }
-                    }
-                    for (int k=0; k < shopsArr.length(); k++) {
-                        JSONObject shopObj = shopsArr.getJSONObject(k);
-                        if (detailsObj.getString("shopId").equals(String.valueOf(shopObj.getInt("id")))) {
-                            item.setShopName(shopObj.getString("name"));
-                            item.setShopLat(shopObj.getDouble("lat"));
-                            item.setShopLng(shopObj.getDouble("lng"));
-                        }
-                    }
-                }
-                item.setOrderName(orderName);
+                item.setDateCreated(request.getString("date_created"));
+                item.setStatus(request.getString("status"));
+                item.setId(String.valueOf(request.getInt("id")));
+                item.setMinServiceFee(String.valueOf(request.getDouble("min_service_fee")));
+                item.setLat(request.getDouble("user_lat"));
+                item.setLng(request.getDouble("user_lng"));
+                item.setIssue(request.getString("issue"));
+                item.setCar(request.getString("make_and_model"));
+                item.setComment(request.getString("comment"));
 
                 HistoryAct.historyItems.add(item);
             }
             HistoryAct.historyAdapter.notifyDataSetChanged();
 
         }catch (Exception e){
+            Toast.makeText(HistoryAct.activity, s, Toast.LENGTH_SHORT).show();
             new AlertDialog.Builder(HistoryAct.activity).setCancelable(false).setTitle("Something went wrong. Retry?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
