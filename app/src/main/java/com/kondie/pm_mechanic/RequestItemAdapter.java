@@ -99,6 +99,9 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemHolder> 
             if (item.getStatus().equalsIgnoreCase("accept")) {
                 holder.acceptButt.setText("Done");
             }
+            else {
+                holder.acceptButt.setText("Accept");
+            }
             Picasso.with(MainActivity.activity).load(item.getImagePath()).into(holder.clientDp);
 
         }catch (Exception e){
