@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -101,6 +102,9 @@ public class GetRequests extends AsyncTask<String, Void, String> {
             JSONArray usersArr = new JSONArray(usersString);
 
             MainActivity.requestItems.clear();
+            if (MainActivity.requestItems.size() > 0 && reqsArr.length() > 0){
+                MainActivity.sendNotif("Request", "There is someone who needs help around your area", "kok");
+            }
             for(int c=0; c<reqsArr.length(); c++){
 
                 RequestItem item = new RequestItem();
@@ -139,21 +143,27 @@ public class GetRequests extends AsyncTask<String, Void, String> {
                         }).show();
             }
             else if (MainActivity.requestItems.size() == 0){
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        new GetRequests().execute("5050-00-00 00:00:00");
+                    }
+                }, 10000);
 //                Toast.makeText(MainActivity.activity, s, Toast.LENGTH_LONG).show();
-                new AlertDialog.Builder(MainActivity.activity).setCancelable(true).setTitle("No orders found")
-                        .setPositiveButton("Refresh", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                                new GetRequests().execute("5050-00-00 00:00:00");
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).show();
+//                new AlertDialog.Builder(MainActivity.activity).setCancelable(true).setTitle("No orders found")
+//                        .setPositiveButton("Refresh", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                dialogInterface.dismiss();
+//                                new GetRequests().execute("5050-00-00 00:00:00");
+//                            }
+//                        })
+//                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                dialogInterface.dismiss();
+//                            }
+//                        }).show();
             }
         }
     }

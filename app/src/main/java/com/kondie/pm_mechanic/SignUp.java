@@ -28,10 +28,10 @@ import androidx.appcompat.widget.Toolbar;
 public class SignUp extends AppCompatActivity {
 
     private EditText fname, lname, email, phone, password, conf_pass, minServiceFee;
-    private ImageView driverDp;
+    private ImageView driverDp, mechanicIDPic;
     public static Activity activity;
-    final int OPEN_GALLERY_CODE = 0;
-    private boolean isDpSet = false;
+    final int OPEN_GALLERY_FOR_DP_CODE = 0, OPEN_GALLERY_FOR_ID_CODE=1;
+    private boolean isDpSet = false, isIdSet = false;
     private Toolbar toolbar;
 
     @Override
@@ -50,23 +50,36 @@ public class SignUp extends AppCompatActivity {
         phone = findViewById(R.id.client_phone);
         minServiceFee = findViewById(R.id.min_service_fee);
         driverDp = findViewById(R.id.add_mechanic_dp);
+        mechanicIDPic = findViewById(R.id.add_mechanic_id_dp);
         password = findViewById(R.id.client_pass);
         conf_pass = findViewById(R.id.client_conf_pass);
         TextView signUpButton = findViewById(R.id.sign_up_button);
 
         signUpButton.setOnClickListener(signItUp);
         driverDp.setOnClickListener(openGalley);
+        mechanicIDPic.setOnClickListener(openGalleyForIdPic);
     }
 
     private View.OnClickListener openGalley = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent openGalleryIntent = new Intent();
-            openGalleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-            openGalleryIntent.setType("image/*");
-            startActivityForResult(Intent.createChooser(openGalleryIntent, "Select icon"), OPEN_GALLERY_CODE);
+            openGallery(OPEN_GALLERY_FOR_DP_CODE);
         }
     };
+
+    private View.OnClickListener openGalleyForIdPic = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            openGallery(OPEN_GALLERY_FOR_ID_CODE);
+        }
+    };
+
+    private void openGallery(final int code){
+        Intent openGalleryIntent = new Intent();
+        openGalleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        openGalleryIntent.setType("image/*");
+        startActivityForResult(Intent.createChooser(openGalleryIntent, "Select icon"), code);
+    }
 
     View.OnClickListener signItUp = new View.OnClickListener() {
         @Override
@@ -75,7 +88,8 @@ public class SignUp extends AppCompatActivity {
                     !lname.getText().toString().equalsIgnoreCase("") &&
                     !phone.getText().toString().equalsIgnoreCase("") &&
                     !password.getText().toString().equalsIgnoreCase("") &&
-                    isDpSet)
+                    isDpSet &&
+                    isIdSet)
             {
                 if (password.getText().toString().equalsIgnoreCase(conf_pass.getText().toString()))
                 {
@@ -86,7 +100,9 @@ public class SignUp extends AppCompatActivity {
                             password.getText().toString(),
                             minServiceFee.getText().toString(),
                             getShopIconString(),
-                            getImageName());
+                            getImageName("PM_mechanic_"),
+                            getIDImageString(),
+                            getImageName("PM_mechanic_id_"));
                 }
                 else {
                     Toast.makeText(activity, "Password doesn't match", Toast.LENGTH_SHORT).show();
@@ -113,10 +129,24 @@ public class SignUp extends AppCompatActivity {
         return (iconString);
     }
 
-    private String getImageName(){
+    private String getIDImageString(){
+
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) mechanicIDPic.getDrawable();
+        Bitmap shopIconBitmap = bitmapDrawable.getBitmap();
+
+        ByteArrayOutputStream byteArrOutStream = new ByteArrayOutputStream();
+        shopIconBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrOutStream);
+        byte[] byteArr = byteArrOutStream.toByteArray();
+
+        String iconString = Base64.encodeToString(byteArr, Base64.DEFAULT);
+
+        return (iconString);
+    }
+
+    private String getImageName(String preStr){
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmSS").format(new Date());
-        String imageName = "PM_mechanic_" + fname.getText().toString() + "_" + timeStamp;
+        String imageName = preStr + fname.getText().toString() + "_" + timeStamp;
 
         return (imageName);
     }
@@ -124,13 +154,22 @@ public class SignUp extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == OPEN_GALLERY_CODE){
+        if (requestCode == OPEN_GALLERY_FOR_DP_CODE){
 
             if (resultCode == RESULT_OK){
 
                 Uri shopIconUri = data.getData();
                 driverDp.setImageURI(shopIconUri);
                 isDpSet = true;
+            }
+        }
+        else if (requestCode == OPEN_GALLERY_FOR_ID_CODE){
+
+            if (resultCode == RESULT_OK){
+
+                Uri shopIconUri = data.getData();
+                mechanicIDPic.setImageURI(shopIconUri);
+                isIdSet = true;
             }
         }
     }

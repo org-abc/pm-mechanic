@@ -46,6 +46,22 @@
                 android:fontFamily="sans-serif-condensed"
                 android:layout_marginBottom="16dp"/>
 
+            <ImageView
+                android:id="@+id/refresh_butt"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignRight="@id/duration_txt"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="21dp"
+                android:layout_marginRight="-45dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/trans_circle"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:src="@drawable/refresh_icon" />
+
         </RelativeLayout>
 
     </FrameLayout>

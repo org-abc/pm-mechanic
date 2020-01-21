@@ -123,7 +123,7 @@ public class AcceptRequest extends AsyncTask<String, Void, String> {
                 editor.putString("requests", ja.toString());
                 editor.putString("status", "busy");
                 editor.commit();
-                CastReceiver.setAlarm(MainActivity.activity);
+//                CastReceiver.setAlarm(MainActivity.activity);
                 new GetRequests().execute("5050-00-00 00:00:00");
             }
 

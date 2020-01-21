@@ -3,6 +3,8 @@ package com.kondie.pm_mechanic;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,8 +12,10 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,6 +63,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -95,8 +100,12 @@ public class MainActivity extends AppCompatActivity
     public static List<RequestItem> requestItems;
     private PermissionUtils permissionUtils;
     public static TextView durationTxt;
+    public static ImageView refreshButt;
     public static Toolbar toolbar;
     private TextView inactiveDisplay;
+    public static String CHANNEL_ID = "0";
+    private static final int notifId = 1;
+    private static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,16 +128,19 @@ public class MainActivity extends AppCompatActivity
             toggle.syncState();
             navigationView.setNavigationItemSelectedListener(this);
 
+            inactiveDisplay = findViewById(R.id.inactive_display);
             orderListLay = findViewById(R.id.order_list_lay);
             showLessOrMoreButt = findViewById(R.id.show_less_or_more_butt);
             orderList = findViewById(R.id.order_list);
             showIcon = findViewById(R.id.show_icon);
+            refreshButt = findViewById(R.id.refresh_butt);
             durationTxt = findViewById(R.id.duration_txt);
             SupportMapFragment mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.nav_map_frag);
             mapFrag.getMapAsync(MainActivity.this);
 
             coolLoading = new CoolLoading(activity);
             showLessOrMoreButt.setOnClickListener(showLessOrMore);
+            refreshButt.setOnClickListener(refreshReqs);
             setGApiClient();
             createLocationRequest();
 
@@ -141,6 +153,13 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
+
+    private View.OnClickListener refreshReqs =  new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            new GetRequests().execute("5050-00-00 00:00:00");
+        }
+    };
 
     private void checkPermissions(){
 
@@ -191,7 +210,6 @@ public class MainActivity extends AppCompatActivity
 
     private void setUpOrderList(){
 
-        inactiveDisplay = findViewById(R.id.inactive_display);
         requestItems = new ArrayList<>();
         linearLayMan = new LinearLayoutManager(activity);
         linearLayMan.setOrientation(RecyclerView.VERTICAL);
@@ -276,12 +294,42 @@ public class MainActivity extends AppCompatActivity
             public void onSuccess(Location location) {
                 if (location != null) {
                     userLocation = location;
+                    CastReceiver.setAlarm(MainActivity.activity);
                     if (requestItems == null) {
                         setUpOrderList();
                     }
                 }
             }
         });
+    }
+
+    public static PendingIntent getDeleteIntent(Context context){
+
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setAction(ACTION_DELETE_NOTIFICATION);
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    public static void sendNotif(String tittle, String contentText, String contentInfo){
+        try {
+            Intent toMainIntent = new Intent(activity, MainActivity.class);
+            toMainIntent.putExtra("track", "yes");
+            PendingIntent toMainPIntent = PendingIntent.getActivity(activity, notifId, toMainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            NotificationCompat.Builder notif = new NotificationCompat.Builder(activity, MainActivity.CHANNEL_ID);
+            notif.setContentTitle(tittle)
+                    .setContentText(contentText)
+                    .setAutoCancel(true)
+                    .setSmallIcon(R.drawable.mph_icon)
+                    .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                    .setContentInfo(contentInfo)
+                    .setContentIntent(toMainPIntent)
+                    .setDeleteIntent(getDeleteIntent(activity));
+
+            NotificationManager notifMan = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
+            notifMan.notify(notifId, notif.build());
+        }catch (Exception e){
+            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private double getScreenWidth(){
