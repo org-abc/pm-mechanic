@@ -28,10 +28,10 @@ import androidx.appcompat.widget.Toolbar;
 public class SignUp extends AppCompatActivity {
 
     private EditText fname, lname, email, phone, password, conf_pass, minServiceFee;
-    private ImageView driverDp, mechanicIDPic;
+    private ImageView driverDp, mechanicIDPic, mechanicQualificationPic;
     public static Activity activity;
-    final int OPEN_GALLERY_FOR_DP_CODE = 0, OPEN_GALLERY_FOR_ID_CODE=1;
-    private boolean isDpSet = false, isIdSet = false;
+    final int OPEN_GALLERY_FOR_DP_CODE = 0, OPEN_GALLERY_FOR_ID_CODE=1, OPEN_GALLERY_FOR_QUALIFICATION_CODE=2;
+    private boolean isDpSet = false, isIdSet = false, isQualificationSet = false;
     private Toolbar toolbar;
 
     @Override
@@ -51,6 +51,7 @@ public class SignUp extends AppCompatActivity {
         minServiceFee = findViewById(R.id.min_service_fee);
         driverDp = findViewById(R.id.add_mechanic_dp);
         mechanicIDPic = findViewById(R.id.add_mechanic_id_dp);
+        mechanicQualificationPic = findViewById(R.id.add_mechanic_qualification_pic);
         password = findViewById(R.id.client_pass);
         conf_pass = findViewById(R.id.client_conf_pass);
         TextView signUpButton = findViewById(R.id.sign_up_button);
@@ -58,6 +59,7 @@ public class SignUp extends AppCompatActivity {
         signUpButton.setOnClickListener(signItUp);
         driverDp.setOnClickListener(openGalley);
         mechanicIDPic.setOnClickListener(openGalleyForIdPic);
+        mechanicQualificationPic.setOnClickListener(openGalleyForQualificationPic);
     }
 
     private View.OnClickListener openGalley = new View.OnClickListener() {
@@ -71,6 +73,13 @@ public class SignUp extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             openGallery(OPEN_GALLERY_FOR_ID_CODE);
+        }
+    };
+
+    private View.OnClickListener openGalleyForQualificationPic = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            openGallery(OPEN_GALLERY_FOR_QUALIFICATION_CODE);
         }
     };
 
@@ -93,16 +102,34 @@ public class SignUp extends AppCompatActivity {
             {
                 if (password.getText().toString().equalsIgnoreCase(conf_pass.getText().toString()))
                 {
-                    new SubmitSignUpForm().execute(fname.getText().toString(),
-                            lname.getText().toString(),
-                            email.getText().toString(),
-                            phone.getText().toString(),
-                            password.getText().toString(),
-                            minServiceFee.getText().toString(),
-                            getShopIconString(),
-                            getImageName("PM_mechanic_"),
-                            getIDImageString(),
-                            getImageName("PM_mechanic_id_"));
+                    if (isQualificationSet) {
+                        new SubmitSignUpForm().execute(fname.getText().toString(),
+                                lname.getText().toString(),
+                                email.getText().toString(),
+                                phone.getText().toString(),
+                                password.getText().toString(),
+                                minServiceFee.getText().toString(),
+                                getShopIconString(),
+                                getImageName("PM_mechanic_"),
+                                getIDImageString(),
+                                getImageName("PM_mechanic_id_"),
+                                "yes",
+                                getQualificationImageString(),
+                                getImageName("PM_mechanic_qualification_"));
+                    }
+                    else{
+                        new SubmitSignUpForm().execute(fname.getText().toString(),
+                                lname.getText().toString(),
+                                email.getText().toString(),
+                                phone.getText().toString(),
+                                password.getText().toString(),
+                                minServiceFee.getText().toString(),
+                                getShopIconString(),
+                                getImageName("PM_mechanic_"),
+                                getIDImageString(),
+                                getImageName("PM_mechanic_id_"),
+                                "no");
+                    }
                 }
                 else {
                     Toast.makeText(activity, "Password doesn't match", Toast.LENGTH_SHORT).show();
@@ -143,6 +170,20 @@ public class SignUp extends AppCompatActivity {
         return (iconString);
     }
 
+    private String getQualificationImageString(){
+
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) mechanicQualificationPic.getDrawable();
+        Bitmap shopIconBitmap = bitmapDrawable.getBitmap();
+
+        ByteArrayOutputStream byteArrOutStream = new ByteArrayOutputStream();
+        shopIconBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrOutStream);
+        byte[] byteArr = byteArrOutStream.toByteArray();
+
+        String iconString = Base64.encodeToString(byteArr, Base64.DEFAULT);
+
+        return (iconString);
+    }
+
     private String getImageName(String preStr){
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmSS").format(new Date());
@@ -170,6 +211,15 @@ public class SignUp extends AppCompatActivity {
                 Uri shopIconUri = data.getData();
                 mechanicIDPic.setImageURI(shopIconUri);
                 isIdSet = true;
+            }
+        }
+        else if (requestCode == OPEN_GALLERY_FOR_QUALIFICATION_CODE){
+
+            if (resultCode == RESULT_OK){
+
+                Uri shopIconUri = data.getData();
+                mechanicQualificationPic.setImageURI(shopIconUri);
+                isQualificationSet = true;
             }
         }
     }

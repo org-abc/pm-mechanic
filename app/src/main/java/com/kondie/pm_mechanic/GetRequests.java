@@ -126,9 +126,9 @@ public class GetRequests extends AsyncTask<String, Void, String> {
                 item.setId(String.valueOf(req.getInt("id")));
                 item.setServiceFee(String.valueOf(req.getDouble("min_service_fee")));
 
-//                if (DistanceCalc.distance(MainActivity.userLocation.getLatitude(), MainActivity.userLocation.getLongitude(), item.shopLat, item.shopLng) <= 20000) {
+                if (DistanceCalc.distance(MainActivity.userLocation.getLatitude(), MainActivity.userLocation.getLongitude(), item.shopLat, item.shopLng) <= 20000) {
                     MainActivity.requestItems.add(item);
-//                }
+                }
             }
             MainActivity.requestItemAdapter.notifyDataSetChanged();
 

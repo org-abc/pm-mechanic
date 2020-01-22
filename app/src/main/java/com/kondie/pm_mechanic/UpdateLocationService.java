@@ -39,7 +39,6 @@ public class UpdateLocationService extends IntentService {
 
         try {
             String action = intent.getAction();
-            Toast.makeText(this, "this is running bra...", Toast.LENGTH_SHORT).show();
 
             if (action.equals(ACTION_START_UPDATE)) {
                 startLocUpdate();

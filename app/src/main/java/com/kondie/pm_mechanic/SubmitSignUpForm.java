@@ -67,6 +67,10 @@ public class SubmitSignUpForm extends AsyncTask<String, Void, String> {
                     .appendQueryParameter("imageName", params[7])
                     .appendQueryParameter("IdImageData", params[8])
                     .appendQueryParameter("IdImageName", params[9]);
+            if (params[10].equals("yes")){
+                builder.appendQueryParameter("QualificationImageData", params[11])
+                        .appendQueryParameter("QualificationImageName", params[12]);
+            }
             String query = builder.build().getEncodedQuery();
 
             OutputStream outStream = conn.getOutputStream();

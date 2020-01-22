@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:background="@color/blue_grey">
+                    android:background="@color/light_blue_2">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -41,9 +41,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Click to set  user profile picture*"
+                            android:text="Click to set your Profile Picture*"
                             android:layout_alignParentBottom="true"
                             android:gravity="center_horizontal"
+                            android:fontFamily="sans-serif-condensed"
                             android:textColor="@color/white"/>
 
                         <ImageView
@@ -72,8 +73,9 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Click to set  user ID picture*"
+                            android:text="Click to set your ID Picture*"
                             android:layout_alignParentBottom="true"
+                            android:fontFamily="sans-serif-condensed"
                             android:gravity="center_horizontal"
                             android:padding="10dp"
                             android:textColor="@color/black"/>
@@ -84,7 +86,40 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="25dp"
                             android:adjustViewBounds="true"
-                            android:src="@drawable/camera_icon"
+                            android:src="@drawable/id_icon"
+                            android:padding="1dp"
+                            android:elevation="4dp"/>
+
+                    </LinearLayout>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Click to set your Qualification Picture IF available"
+                            android:layout_alignParentBottom="true"
+                            android:gravity="center_horizontal"
+                            android:fontFamily="sans-serif-condensed"
+                            android:padding="10dp"
+                            android:textColor="@color/black"/>
+
+                        <ImageView
+                            android:id="@+id/add_mechanic_qualification_pic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="25dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/qualification_icon"
                             android:padding="1dp"
                             android:elevation="4dp"/>
 

@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity
         prefs = getSharedPreferences("PM_M", Context.MODE_PRIVATE);
         editor = prefs.edit();
 
+        sendNotif("emegency", "thi is is", "balah blah");
         try {
             toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
@@ -144,9 +145,8 @@ public class MainActivity extends AppCompatActivity
             setGApiClient();
             createLocationRequest();
 
-            if (prefs.getString("fname", "").equals("")) {
-                new GetUserInfo().execute();
-            } else {
+            new GetUserInfo().execute();
+            if (!prefs.getString("fname", "").equals("")) {
                 setUserDrawerInfo((NavigationView) findViewById(R.id.nav_view));
             }
             setUpOrderList();
@@ -158,7 +158,9 @@ public class MainActivity extends AppCompatActivity
     private View.OnClickListener refreshReqs =  new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            new GetRequests().execute("5050-00-00 00:00:00");
+            if (prefs.getString("accStatus", "").equals("active")) {
+                new GetRequests().execute("5050-00-00 00:00:00");
+            }
         }
     };
 
@@ -311,23 +313,23 @@ public class MainActivity extends AppCompatActivity
 
     public static void sendNotif(String tittle, String contentText, String contentInfo){
         try {
-            Intent toMainIntent = new Intent(activity, MainActivity.class);
-            toMainIntent.putExtra("track", "yes");
-            PendingIntent toMainPIntent = PendingIntent.getActivity(activity, notifId, toMainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//            Intent toMainIntent = new Intent(activity, MainActivity.class);
+//            toMainIntent.putExtra("track", "yes");
+//            PendingIntent toMainPIntent = PendingIntent.getActivity(activity, notifId, toMainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationCompat.Builder notif = new NotificationCompat.Builder(activity, MainActivity.CHANNEL_ID);
             notif.setContentTitle(tittle)
                     .setContentText(contentText)
-                    .setAutoCancel(true)
-                    .setSmallIcon(R.drawable.mph_icon)
+//                    .setAutoCancel(true)
+//                    .setSmallIcon(R.mipmap.pm_m_icon)
                     .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
-                    .setContentInfo(contentInfo)
-                    .setContentIntent(toMainPIntent)
-                    .setDeleteIntent(getDeleteIntent(activity));
+                    .setContentInfo(contentInfo);
+//                    .setContentIntent(toMainPIntent);
+//                    .setDeleteIntent(getDeleteIntent(activity));
 
             NotificationManager notifMan = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
             notifMan.notify(notifId, notif.build());
         }catch (Exception e){
-            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
