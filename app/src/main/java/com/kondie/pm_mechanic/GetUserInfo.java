@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -40,7 +41,8 @@ public class GetUserInfo extends AsyncTask<String, Void, String> {
             conn.setDoInput(true);
 
             Uri.Builder builder = new Uri.Builder().appendQueryParameter("email", email)
-                    .appendQueryParameter("password", pass);
+                    .appendQueryParameter("password", pass)
+                    .appendQueryParameter("token", params[0]);
             String query = builder.build().getEncodedQuery();
 
             OutputStream outStream = conn.getOutputStream();

@@ -101,9 +101,6 @@ public class GetRequests extends AsyncTask<String, Void, String> {
             JSONArray reqsArr = new JSONArray(reqsString);
             JSONArray usersArr = new JSONArray(usersString);
 
-            if (MainActivity.requestItems.size() == 0 && reqsArr.length() > 0){
-                MainActivity.sendNotif("Request", "There is someone who needs help around your area", "kok");
-            }
             MainActivity.requestItems.clear();
 
             for(int c=0; c<reqsArr.length(); c++){

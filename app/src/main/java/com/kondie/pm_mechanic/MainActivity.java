@@ -3,6 +3,7 @@ package com.kondie.pm_mechanic;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -51,6 +53,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -64,6 +68,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -103,9 +108,11 @@ public class MainActivity extends AppCompatActivity
     public static ImageView refreshButt;
     public static Toolbar toolbar;
     private TextView inactiveDisplay;
-    public static String CHANNEL_ID = "0";
-    private static final int notifId = 1;
-    private static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
+    public static final String CHANNEL_ID = "0";
+    public static final String CHANNEL_NAME = "pm channel";
+    public static final String CHANNEL_DESC = "Notification Channel";
+    public static final int NOTIF_ID = 1;
+    public static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +123,8 @@ public class MainActivity extends AppCompatActivity
         activity = this;
         prefs = getSharedPreferences("PM_M", Context.MODE_PRIVATE);
         editor = prefs.edit();
+        createNotifChannel();
 
-        sendNotif("emegency", "thi is is", "balah blah");
         try {
             toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
@@ -145,14 +152,30 @@ public class MainActivity extends AppCompatActivity
             setGApiClient();
             createLocationRequest();
 
-            new GetUserInfo().execute();
             if (!prefs.getString("fname", "").equals("")) {
                 setUserDrawerInfo((NavigationView) findViewById(R.id.nav_view));
             }
             setUpOrderList();
+            sendTokenAndGetMechanicInfo();
         }catch (Exception e){
             Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void sendTokenAndGetMechanicInfo(){
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                if (task.isSuccessful()){
+                    new GetUserInfo().execute(task.getResult().getToken());
+                }
+                else{
+                    new GetUserInfo().execute("");
+                }
+            }
+        });
     }
 
     private View.OnClickListener refreshReqs =  new View.OnClickListener() {
@@ -163,6 +186,17 @@ public class MainActivity extends AppCompatActivity
             }
         }
     };
+
+    private void createNotifChannel(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            NotificationChannel notifChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+            notifChannel.setDescription(CHANNEL_DESC);
+            NotificationManager notifMan = getSystemService(NotificationManager.class);
+            notifMan.createNotificationChannel(notifChannel);
+        }
+    }
 
     private void checkPermissions(){
 
@@ -302,35 +336,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-    }
-
-    public static PendingIntent getDeleteIntent(Context context){
-
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.setAction(ACTION_DELETE_NOTIFICATION);
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    public static void sendNotif(String tittle, String contentText, String contentInfo){
-        try {
-//            Intent toMainIntent = new Intent(activity, MainActivity.class);
-//            toMainIntent.putExtra("track", "yes");
-//            PendingIntent toMainPIntent = PendingIntent.getActivity(activity, notifId, toMainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            NotificationCompat.Builder notif = new NotificationCompat.Builder(activity, MainActivity.CHANNEL_ID);
-            notif.setContentTitle(tittle)
-                    .setContentText(contentText)
-//                    .setAutoCancel(true)
-//                    .setSmallIcon(R.mipmap.pm_m_icon)
-                    .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
-                    .setContentInfo(contentInfo);
-//                    .setContentIntent(toMainPIntent);
-//                    .setDeleteIntent(getDeleteIntent(activity));
-
-            NotificationManager notifMan = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
-            notifMan.notify(notifId, notif.build());
-        }catch (Exception e){
-            Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show();
-        }
     }
 
     private double getScreenWidth(){
