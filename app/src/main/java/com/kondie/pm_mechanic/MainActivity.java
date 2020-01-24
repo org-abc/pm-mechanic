@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity
                 if (location != null) {
                     userLocation = location;
                     CastReceiver.setAlarm(MainActivity.activity);
-                    if (requestItems == null) {
+                    if (requestItems.size() == 0) {
                         if (prefs.getString("accStatus", "").equals("active")) {
                             if (userLocation != null) {
                                 new GetRequests().execute(MainActivity.latestRequestDate);
