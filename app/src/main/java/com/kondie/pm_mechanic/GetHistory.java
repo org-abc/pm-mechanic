@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -29,15 +30,6 @@ public class GetHistory extends AsyncTask<String, Void, String> {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-    private ProgressDialog progressDialog;
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        progressDialog = new ProgressDialog(HistoryAct.activity);
-        progressDialog.setTitle("Collecting history...");
-        progressDialog.show();
-    }
 
     @Override
     protected String doInBackground(String... params) {
@@ -95,54 +87,46 @@ public class GetHistory extends AsyncTask<String, Void, String> {
         super.onPostExecute(s);
 
         try{
-            progressDialog.dismiss();
-            JSONObject allDAta = new JSONObject(s);
-            String requestsString = allDAta.getString("requests");
-            String userString = allDAta.getString("users");
-
-            JSONArray requestsArr = new JSONArray(requestsString);
-            JSONArray userArr = new JSONArray(userString);
-
-            for(int c=0; c<requestsArr.length(); c++){
-
-                HistoryItem item = new HistoryItem();
-                JSONObject request = requestsArr.getJSONObject(c);
-                try{
-                    JSONObject user = userArr.getJSONObject(c);
-                    item.setClientName(user.getString("fname") + " " + user.getString("lname"));
-                }catch (Exception e){
-                    item.setClientName("None");
-                }
-                item.setDateCreated(request.getString("date_created"));
-                item.setStatus(request.getString("status"));
-                item.setId(String.valueOf(request.getInt("id")));
-                item.setMinServiceFee(String.valueOf(request.getDouble("min_service_fee")));
-                item.setLat(request.getDouble("user_lat"));
-                item.setLng(request.getDouble("user_lng"));
-                item.setIssue(request.getString("issue"));
-                item.setCar(request.getString("make_and_model"));
-                item.setComment(request.getString("comment"));
-
-                HistoryAct.historyItems.add(item);
+            if (s.equals("empty")){
+                Toast.makeText(HistoryAct.activity, "You have no history", Toast.LENGTH_SHORT).show();
             }
-            HistoryAct.historyAdapter.notifyDataSetChanged();
+            else {
+                HistoryAct.getProgressBar().setVisibility(View.GONE);
+                JSONObject allDAta = new JSONObject(s);
+                String requestsString = allDAta.getString("requests");
+                String userString = allDAta.getString("users");
+
+                JSONArray requestsArr = new JSONArray(requestsString);
+                JSONArray userArr = new JSONArray(userString);
+
+                for (int c = 0; c < requestsArr.length(); c++) {
+
+                    HistoryItem item = new HistoryItem();
+                    JSONObject request = requestsArr.getJSONObject(c);
+                    try {
+                        JSONObject user = userArr.getJSONObject(c);
+                        item.setClientName(user.getString("fname") + " " + user.getString("lname"));
+                    } catch (Exception e) {
+                        item.setClientName("None");
+                    }
+                    item.setDateCreated(request.getString("date_created"));
+                    item.setStatus(request.getString("status"));
+                    item.setId(String.valueOf(request.getInt("id")));
+                    item.setMinServiceFee(String.valueOf(request.getDouble("min_service_fee")));
+                    item.setLat(request.getDouble("user_lat"));
+                    item.setLng(request.getDouble("user_lng"));
+                    item.setIssue(request.getString("issue"));
+                    item.setCar(request.getString("make_and_model"));
+                    item.setComment(request.getString("comment"));
+
+                    HistoryAct.historyItems.add(item);
+                }
+                HistoryAct.historyAdapter.notifyDataSetChanged();
+            }
 
         }catch (Exception e){
-            Toast.makeText(HistoryAct.activity, s, Toast.LENGTH_SHORT).show();
-            new AlertDialog.Builder(HistoryAct.activity).setCancelable(false).setTitle("Something went wrong. Retry?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            new GetHistory().execute("5050-00-00 00:00:00");
-                        }
-                    })
-                    .setNegativeButton("no", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            HistoryAct.activity.finish();
-                        }
-                    }).show();
+            HistoryAct.getProgressBar().setVisibility(View.GONE);
+            HistoryAct.getLinearLayout().setVisibility(View.VISIBLE);
         }
     }
 }
