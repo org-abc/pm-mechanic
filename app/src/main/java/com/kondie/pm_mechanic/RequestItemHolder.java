@@ -98,12 +98,12 @@ public class RequestItemHolder extends RecyclerView.ViewHolder {
                         imagePath.getText().toString(), phone.getText().toString(), lat.getText().toString(), lng.getText().toString());
                 showOnMapFunc();
             }
-            else if (hStatus.getText().toString().equalsIgnoreCase("accept")){
+            else if (hStatus.getText().toString().equalsIgnoreCase("accept") || hStatus.getText().toString().equalsIgnoreCase("arrived")){
                 new AlertDialog.Builder(MainActivity.activity).setCancelable(false).setMessage("Are you sure you want to set the request as RESOLVED?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                new SetAsDelivered().execute(requestId.getText().toString());
+                                new SetAsDelivered().execute(requestId.getText().toString(), acceptButt.getText().toString().toLowerCase());
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {

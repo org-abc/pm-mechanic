@@ -124,7 +124,7 @@ public class AcceptRequest extends AsyncTask<String, Void, String> {
                 editor.putString("status", "busy");
                 editor.commit();
 //                CastReceiver.setAlarm(MainActivity.activity);
-                new GetRequests().execute("5050-00-00 00:00:00");
+                new GetRequests().execute(MainActivity.latestRequestDate);
             }
 
         }catch (Exception e){

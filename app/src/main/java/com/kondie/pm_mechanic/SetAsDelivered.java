@@ -38,7 +38,8 @@ public class SetAsDelivered  extends AsyncTask<String, Void, String> {
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
-            Uri.Builder builder = new Uri.Builder().appendQueryParameter("reqId", params[0]);
+            Uri.Builder builder = new Uri.Builder().appendQueryParameter("reqId", params[0])
+                    .appendQueryParameter("status", params[1]);
             String query = builder.build().getEncodedQuery();
 
             OutputStream outStream = conn.getOutputStream();
@@ -85,7 +86,7 @@ public class SetAsDelivered  extends AsyncTask<String, Void, String> {
             if (s.equalsIgnoreCase("congrats")){
                 Toast.makeText(MainActivity.activity, "Order delivered", Toast.LENGTH_SHORT).show();
                 MainActivity.requestItems.clear();
-                new GetRequests().execute("5050-00-00 00:00:00");
+                new GetRequests().execute(MainActivity.latestRequestDate);
             }else{
                 Toast.makeText(MainActivity.activity, s, Toast.LENGTH_SHORT).show();
             }

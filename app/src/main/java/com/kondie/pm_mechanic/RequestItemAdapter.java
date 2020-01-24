@@ -96,11 +96,15 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemHolder> 
             holder.serviceFee.setText("Minimum fee: R" + item.getServiceFee());
             holder.makeAndModel.setText(item.getMakeAndModel());
             holder.hStatus.setText(item.getStatus());
-            if (item.getStatus().equalsIgnoreCase("accept")) {
-                holder.acceptButt.setText("Done");
-            }
-            else {
+
+            if (item.getStatus().equalsIgnoreCase("waiting")) {
                 holder.acceptButt.setText("Accept");
+            }
+            else if (item.getStatus().equalsIgnoreCase("accept")) {
+                holder.acceptButt.setText("Arrived");
+            }
+            else if (item.getStatus().equalsIgnoreCase("arrived")){
+                holder.acceptButt.setText("Done");
             }
             Picasso.with(MainActivity.activity).load(item.getImagePath()).into(holder.clientDp);
 

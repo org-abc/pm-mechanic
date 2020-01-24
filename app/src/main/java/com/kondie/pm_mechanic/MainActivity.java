@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity
     public static final String CHANNEL_NAME = "pm channel";
     public static final String CHANNEL_DESC = "Notification Channel";
     public static final int NOTIF_ID = 1;
+    public static String latestRequestDate = "2019-00-00 00:00:00";
     public static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
 
     @Override
@@ -182,7 +183,9 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onClick(View view) {
             if (prefs.getString("accStatus", "").equals("active")) {
-                new GetRequests().execute("5050-00-00 00:00:00");
+                if (userLocation != null) {
+                    new GetRequests().execute(MainActivity.latestRequestDate);
+                }
             }
         }
     };
@@ -268,9 +271,6 @@ public class MainActivity extends AppCompatActivity
         }
         else{
             orderListLay.startAnimation(coolLoading.getShowMoreAnim());
-            if (prefs.getString("accStatus", "").equals("active")) {
-                new GetRequests().execute("5050-00-00 00:00:00");
-            }
         }
     }
 
@@ -327,7 +327,12 @@ public class MainActivity extends AppCompatActivity
                     CastReceiver.setAlarm(MainActivity.activity);
                     if (requestItems == null) {
                         if (prefs.getString("accStatus", "").equals("active")) {
-                            new GetRequests().execute("5050-00-00 00:00:00");
+                            if (userLocation != null) {
+                                new GetRequests().execute(MainActivity.latestRequestDate);
+                            }
+                            else{
+                                setLocation();
+                            }
                         }
                         else{
                             inactiveDisplay.setVisibility(View.VISIBLE);
@@ -470,7 +475,9 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         if (prefs.getString("accStatus", "").equals("active")) {
-            new GetRequests().execute("5050-00-00 00:00:00");
+            if (userLocation != null) {
+                new GetRequests().execute(MainActivity.latestRequestDate);
+            }
         }
         else{
             inactiveDisplay.setVisibility(View.VISIBLE);

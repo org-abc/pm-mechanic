@@ -92,8 +92,8 @@ public class GetRequests extends AsyncTask<String, Void, String> {
         super.onPostExecute(s);
 
         try{
-            MainActivity.requestItems.clear();
             MainActivity.coolLoading.stopCoolLoadingAnim();
+            MainActivity.requestItems.clear();
             JSONObject allDAta = new JSONObject(s);
             String reqsString = allDAta.getString("requests");
             String usersString = allDAta.getString("users");
@@ -136,7 +136,7 @@ public class GetRequests extends AsyncTask<String, Void, String> {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
-                                new GetRequests().execute("5050-00-00 00:00:00");
+                                new GetRequests().execute(MainActivity.latestRequestDate);
                             }
                         }).show();
             }
@@ -144,7 +144,7 @@ public class GetRequests extends AsyncTask<String, Void, String> {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        new GetRequests().execute("5050-00-00 00:00:00");
+                        new GetRequests().execute(MainActivity.latestRequestDate);
                     }
                 }, 60000);
 //                new AlertDialog.Builder(MainActivity.activity).setCancelable(true).setTitle("No orders found")
@@ -152,7 +152,7 @@ public class GetRequests extends AsyncTask<String, Void, String> {
 //                            @Override
 //                            public void onClick(DialogInterface dialogInterface, int i) {
 //                                dialogInterface.dismiss();
-//                                new GetRequests().execute("5050-00-00 00:00:00");
+//                                new GetRequests().execute(MainActivity.latestRequestDate);
 //                            }
 //                        })
 //                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
