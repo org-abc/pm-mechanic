@@ -88,10 +88,16 @@ public class GetHistory extends AsyncTask<String, Void, String> {
 
         try{
             if (s.equals("empty")){
-                Toast.makeText(HistoryAct.activity, "You have no history", Toast.LENGTH_SHORT).show();
+                if (MainActivity.historyItems.size() == 0) {
+                    Toast.makeText(HistoryAct.activity, "You have no history", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(HistoryAct.activity, "You have any more history", Toast.LENGTH_SHORT).show();
+                }
             }
             else {
                 HistoryAct.getProgressBar().setVisibility(View.GONE);
+                HistoryAct.getLoadMoreProgressBar().setVisibility(View.GONE);
                 JSONObject allDAta = new JSONObject(s);
                 String requestsString = allDAta.getString("requests");
                 String userString = allDAta.getString("users");
@@ -119,9 +125,10 @@ public class GetHistory extends AsyncTask<String, Void, String> {
                     item.setCar(request.getString("make_and_model"));
                     item.setComment(request.getString("comment"));
 
-                    HistoryAct.historyItems.add(item);
+                    MainActivity.historyItems.add(item);
                 }
                 HistoryAct.historyAdapter.notifyDataSetChanged();
+                HistoryAdapter.setLoaded();
             }
 
         }catch (Exception e){

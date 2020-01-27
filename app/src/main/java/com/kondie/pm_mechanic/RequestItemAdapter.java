@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemHolder> implements OnEndOfListListener {
+public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemHolder> {
 
     Activity activity;
     List<RequestItem> requestItems;
@@ -45,16 +45,12 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemHolder> 
                 lastVisibleItem = linearLayMan.findLastVisibleItemPosition();
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold) && requestItems.size()%10 == 0) {
                     if (onEndOfListListener != null) {
+                        isLoading = true;
                         onEndOfListListener.onEndOfList();
                     }
                 }
             }
         });
-    }
-
-    @Override
-    public void onEndOfList() {
-        isLoading = true;
     }
 
     public void setOnEndOfListListener(OnEndOfListListener onEndOfListListener){

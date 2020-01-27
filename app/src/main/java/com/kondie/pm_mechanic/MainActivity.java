@@ -113,7 +113,9 @@ public class MainActivity extends AppCompatActivity
     public static final String CHANNEL_DESC = "Notification Channel";
     public static final int NOTIF_ID = 1;
     public static String latestRequestDate = "2019-00-00 00:00:00";
+    public static String lastHistoryDate = "5050-00-00 00:00:00";
     public static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
+    public static List<HistoryItem> historyItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +139,7 @@ public class MainActivity extends AppCompatActivity
             toggle.syncState();
             navigationView.setNavigationItemSelectedListener(this);
 
+            historyItems = new ArrayList<>();
             inactiveDisplay = findViewById(R.id.inactive_display);
             orderListLay = findViewById(R.id.order_list_lay);
             showLessOrMoreButt = findViewById(R.id.show_less_or_more_butt);
