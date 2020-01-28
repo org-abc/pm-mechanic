@@ -31,7 +31,7 @@ public class NotificationHelper {
             NotificationManagerCompat notifMan = NotificationManagerCompat.from(context);
             notifMan.notify(MainActivity.NOTIF_ID, notif.build());
         }catch (Exception e){
-            Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 

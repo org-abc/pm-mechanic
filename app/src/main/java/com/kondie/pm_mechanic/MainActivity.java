@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity
             setUpOrderList();
             sendTokenAndGetMechanicInfo();
         }catch (Exception e){
-            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity
                     .enableAutoManage(this, this)
                     .build();
         } catch (Exception e) {
-            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -392,7 +392,7 @@ public class MainActivity extends AppCompatActivity
 
             navGoogleMap.setMyLocationEnabled(true);
         }catch (Exception e){
-            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -549,7 +549,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }catch (Exception e){
-            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 

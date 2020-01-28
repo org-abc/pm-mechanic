@@ -105,7 +105,7 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemHolder> 
             Picasso.with(MainActivity.activity).load(item.getImagePath()).into(holder.clientDp);
 
         }catch (Exception e){
-            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 

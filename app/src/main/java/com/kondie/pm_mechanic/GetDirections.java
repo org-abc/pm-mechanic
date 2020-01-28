@@ -106,7 +106,7 @@ public class GetDirections extends AsyncTask <Float, Void, String> {
             CastReceiver.setAlarm(MainActivity.activity);
 
         }catch (Exception e){
-            Toast.makeText(MainActivity.activity, s + e.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.activity, s + e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -84,15 +84,15 @@ public class SetAsDelivered  extends AsyncTask<String, Void, String> {
         try{
             MainActivity.coolLoading.stopCoolLoadingAnim();
             if (s.equalsIgnoreCase("congrats")){
-                Toast.makeText(MainActivity.activity, "Order delivered", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.activity, "Done", Toast.LENGTH_SHORT).show();
                 MainActivity.requestItems.clear();
                 new GetRequests().execute(MainActivity.latestRequestDate);
             }else{
-                Toast.makeText(MainActivity.activity, s, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.activity, s, Toast.LENGTH_SHORT).show();
             }
 
         }catch (Exception e){
-            Toast.makeText(MainActivity.activity, e.toString() + s, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.activity, e.toString() + s, Toast.LENGTH_SHORT).show();
         }
     }
 }

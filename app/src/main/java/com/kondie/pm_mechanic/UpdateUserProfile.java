@@ -48,7 +48,7 @@ public class UpdateUserProfile extends AsyncTask<String, Void, String> {
             imageData = params[3];
             imageName = params[4];
 
-            URL url = new URL(Constants.PM_HOSTING_WEBSITE + "/updateDriverProfile.php");
+            URL url = new URL(Constants.PM_HOSTING_WEBSITE + "/updateMechanicProfile.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
