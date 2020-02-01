@@ -102,7 +102,7 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemHolder> 
             else if (item.getStatus().equalsIgnoreCase("arrived")){
                 holder.acceptButt.setText("Done");
             }
-            Picasso.with(MainActivity.activity).load(item.getImagePath()).into(holder.clientDp);
+            Picasso.with(MainActivity.activity).load(item.getImagePath().replace(Constants.WRONG_PART, Constants.CORRECT_PART)).placeholder(R.drawable.user_icon).into(holder.clientDp);
 
         }catch (Exception e){
 //            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
