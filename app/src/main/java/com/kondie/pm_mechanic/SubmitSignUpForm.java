@@ -123,6 +123,7 @@ public class SubmitSignUpForm extends AsyncTask<String, Void, String> {
                 }
                 SignUp.activity.startActivity(gotoMain);
                 SignUp.activity.finish();
+                SignIn.activity.finish();
             }
             else
             {
