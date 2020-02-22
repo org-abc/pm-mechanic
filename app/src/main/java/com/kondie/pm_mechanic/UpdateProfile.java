@@ -29,11 +29,11 @@ public class UpdateProfile extends AppCompatActivity {
     Toolbar toolbar;
     SharedPreferences prefs;
     private EditText fname, lname, phone;
-    private ImageView userDp;
+    private ImageView userDp, userID, userQualification;
     private TextView updateButt;
     public static Activity activity;
-    final int OPEN_GALLERY_CODE = 0;
-    private boolean isDpChanged = false;
+    final int OPEN_DP_GALLERY_CODE = 0, OPEN_ID_GALLERY_CODE = 1, OPEN_QUALIFICATION_GALLERY_CODE = 2;
+    private boolean isDpChanged = false, isIDChanged = false, isQualificationChanged = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,15 +50,25 @@ public class UpdateProfile extends AppCompatActivity {
         lname = findViewById(R.id.edit_client_lname);
         phone = findViewById(R.id.edit_client_phone);
         userDp = findViewById(R.id.edit_user_dp);
+        userID = findViewById(R.id.edit_user_id);
+        userQualification = findViewById(R.id.edit_user_qualification);
         updateButt = findViewById(R.id.finish_edit_button);
 
         fname.setText(prefs.getString("lname", ""));
         lname.setText(prefs.getString("fname", ""));
         phone.setText(prefs.getString("phone", ""));
-        Picasso.with(this).load(prefs.getString("imagePath", "").replace(Constants.WRONG_PART, Constants.CORRECT_PART)).placeholder(R.drawable.user_icon).into(userDp);
+        try {
+            Picasso.with(this).load(prefs.getString("imagePath", "").replace(Constants.WRONG_PART, Constants.CORRECT_PART)).placeholder(R.drawable.user_icon).into(userDp);
+            Picasso.with(this).load(prefs.getString("idImagePath", "").replace(Constants.WRONG_PART, Constants.CORRECT_PART)).placeholder(R.drawable.id_icon).into(userID);
+            Picasso.with(this).load(prefs.getString("qualificationImagePath", "").replace(Constants.WRONG_PART, Constants.CORRECT_PART)).placeholder(R.drawable.qualification_icon).into(userQualification);
+        }catch (Exception e){
+            Toast.makeText(activity, "Failed to load the pictures", Toast.LENGTH_SHORT).show();
+        }
 
         updateButt.setOnClickListener(updateIt);
-        userDp.setOnClickListener(openGalley);
+        userDp.setOnClickListener(openDPGallery);
+        userID.setOnClickListener(openIDGallery);
+        userQualification.setOnClickListener(openQualificationGallery);
     }
 
     View.OnClickListener updateIt = new View.OnClickListener() {
@@ -71,8 +81,12 @@ public class UpdateProfile extends AppCompatActivity {
                 new UpdateUserProfile().execute(fname.getText().toString(),
                         lname.getText().toString(),
                         phone.getText().toString(),
-                        getShopIconString(),
-                        getImageName());
+                        getShopIconString("dp"),
+                        getImageName("dp"),
+                        getShopIconString("id"),
+                        getImageName("id"),
+                        getShopIconString("qualification"),
+                        getImageName("qualification"));
             }
             else
             {
@@ -81,19 +95,48 @@ public class UpdateProfile extends AppCompatActivity {
         }
     };
 
-    private View.OnClickListener openGalley = new View.OnClickListener() {
+    private View.OnClickListener openDPGallery = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent openGalleryIntent = new Intent();
-            openGalleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-            openGalleryIntent.setType("image/*");
-            startActivityForResult(Intent.createChooser(openGalleryIntent, "Select icon"), OPEN_GALLERY_CODE);
+            openGallery(OPEN_DP_GALLERY_CODE);
         }
     };
 
-    private String getShopIconString(){
 
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) userDp.getDrawable();
+    private View.OnClickListener openIDGallery = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            openGallery(OPEN_ID_GALLERY_CODE);
+        }
+    };
+
+
+    private View.OnClickListener openQualificationGallery = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            openGallery(OPEN_QUALIFICATION_GALLERY_CODE);
+        }
+    };
+
+    void openGallery(int code){
+        Intent openGalleryIntent = new Intent();
+        openGalleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        openGalleryIntent.setType("image/*");
+        startActivityForResult(Intent.createChooser(openGalleryIntent, "Select icon"), code);
+    }
+
+    private String getShopIconString(String type){
+
+        BitmapDrawable bitmapDrawable;
+        if (type.equalsIgnoreCase("dp")){
+            bitmapDrawable = (BitmapDrawable) userDp.getDrawable();
+        }
+        else if (type.equalsIgnoreCase("id")){
+            bitmapDrawable = (BitmapDrawable) userID.getDrawable();
+        }
+        else{
+            bitmapDrawable = (BitmapDrawable) userQualification.getDrawable();
+        }
         Bitmap shopIconBitmap = bitmapDrawable.getBitmap();
 
         ByteArrayOutputStream byteArrOutStream = new ByteArrayOutputStream();
@@ -105,28 +148,51 @@ public class UpdateProfile extends AppCompatActivity {
         return (iconString);
     }
 
-    private String getImageName(){
+    private String getImageName(String type){
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmSS").format(new Date());
-        String imageName = "Skopo_user_" + fname.getText().toString() + "_" + timeStamp;
+        String imageName = "pm_user_" + type + "_" + fname.getText().toString() + "_" + timeStamp;
 
-        if (isDpChanged) {
+        if (isDpChanged && type.equalsIgnoreCase("dp")) {
             return (imageName);
-        }else{
-            return "";
         }
+        if (isIDChanged && type.equalsIgnoreCase("id")) {
+            return (imageName);
+        }
+        if (isQualificationChanged && type.equalsIgnoreCase("qualification")) {
+            return (imageName);
+        }
+        return "";
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == OPEN_GALLERY_CODE){
+        if (requestCode == OPEN_DP_GALLERY_CODE){
 
             if (resultCode == RESULT_OK){
 
-                Uri shopIconUri = data.getData();
-                userDp.setImageURI(shopIconUri);
+                Uri imageUri = data.getData();
+                userDp.setImageURI(imageUri);
                 isDpChanged = true;
+            }
+        }
+        else if (requestCode == OPEN_ID_GALLERY_CODE){
+
+            if (resultCode == RESULT_OK){
+
+                Uri imageUri = data.getData();
+                userID.setImageURI(imageUri);
+                isIDChanged = true;
+            }
+        }
+        else if (requestCode == OPEN_QUALIFICATION_GALLERY_CODE){
+
+            if (resultCode == RESULT_OK){
+
+                Uri imageUri = data.getData();
+                userQualification.setImageURI(imageUri);
+                isQualificationChanged = true;
             }
         }
     }

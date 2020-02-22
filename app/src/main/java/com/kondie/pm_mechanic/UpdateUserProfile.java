@@ -23,7 +23,7 @@ public class UpdateUserProfile extends AsyncTask<String, Void, String> {
     private ProgressDialog pDialog;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
-    private String fname, lname, phone, imageData, imageName;
+    private String fname, lname, phone, dpImageData, dpImageName, idImageData, idImageName, qualificationImageData, qualificationImageName;
 
     @Override
     protected void onPreExecute() {
@@ -45,8 +45,12 @@ public class UpdateUserProfile extends AsyncTask<String, Void, String> {
             fname = params[0];
             lname = params[1];
             phone = params[2];
-            imageData = params[3];
-            imageName = params[4];
+            dpImageData = params[3];
+            dpImageName = params[4];
+            idImageData = params[5];
+            idImageName = params[6];
+            qualificationImageData = params[7];
+            qualificationImageName = params[8];
 
             URL url = new URL(Constants.PM_HOSTING_WEBSITE + "/updateMechanicProfile.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -58,9 +62,17 @@ public class UpdateUserProfile extends AsyncTask<String, Void, String> {
                     .appendQueryParameter("lname", lname)
                     .appendQueryParameter("phone", phone)
                     .appendQueryParameter("email", prefs.getString("email", ""));
-            if (!imageName.equals("")){
-                builder.appendQueryParameter("imageData", imageData)
-                        .appendQueryParameter("imageName", imageName);
+            if (!dpImageName.equals("")){
+                builder.appendQueryParameter("dpImageData", dpImageData)
+                        .appendQueryParameter("dpImageName", dpImageName);
+            }
+            if (!idImageName.equals("")){
+                builder.appendQueryParameter("idImageData", idImageData)
+                        .appendQueryParameter("idImageName", idImageName);
+            }
+            if (!qualificationImageName.equals("")){
+                builder.appendQueryParameter("qualificationImageData", qualificationImageData)
+                        .appendQueryParameter("qualificationImageName", qualificationImageName);
             }
             String query = builder.build().getEncodedQuery();
 

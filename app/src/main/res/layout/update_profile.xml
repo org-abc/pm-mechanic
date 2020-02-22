@@ -34,7 +34,17 @@
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                        android:background="@drawable/big_box_edittext"
+                        android:layout_margin="5dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="CLICK TO CHANGE PROFILE PICTURE"
+                            android:layout_alignParentBottom="true"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/grey"/>
 
                         <ImageView
                                 android:id="@+id/edit_user_dp"
@@ -42,21 +52,80 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="25dp"
                                 android:adjustViewBounds="true"
-                                android:src="@drawable/wallpaper_1"
+                                android:src="@drawable/user_icon"
                                 android:padding="1dp"
                                 android:elevation="4dp"/>
-
-                        <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Click to set icon*"
-                                android:layout_alignParentBottom="true"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/grey"/>
 
                     </LinearLayout>
 
                 </TableRow>
+
+                <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                        android:background="@drawable/big_box_edittext"
+                        android:layout_margin="5dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="CLICK TO CHANGE ID"
+                            android:layout_alignParentBottom="true"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/grey"/>
+
+                        <ImageView
+                                android:id="@+id/edit_user_id"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="25dp"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/id_icon"
+                                android:padding="1dp"
+                                android:elevation="4dp"/>
+
+                    </LinearLayout>
+
+                </TableRow>
+
+                <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                        android:background="@drawable/big_box_edittext"
+                        android:layout_margin="5dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="CLICK TO CHANGE QUALIFICATION"
+                            android:layout_alignParentBottom="true"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/grey"/>
+
+                        <ImageView
+                                android:id="@+id/edit_user_qualification"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="25dp"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/qualification_icon"
+                                android:padding="1dp"
+                                android:elevation="4dp"/>
+
+                    </LinearLayout>
+
+                </TableRow>
+
             </TableLayout>
 
             <EditText

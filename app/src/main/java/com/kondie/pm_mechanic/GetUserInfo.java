@@ -89,6 +89,8 @@ public class GetUserInfo extends AsyncTask<String, Void, String> {
             editor.putString("fname", userOb.getString("fname"));
             editor.putString("lname", userOb.getString("lname"));
             editor.putString("imagePath", userOb.getString("image_path"));
+            editor.putString("idImagePath", userOb.getString("id_image_path"));
+            editor.putString("qualificationImagePath", userOb.getString("qualification_image_path"));
             editor.putString("phone", userOb.getString("phone"));
             editor.putString("email", userOb.getString("email"));
 
