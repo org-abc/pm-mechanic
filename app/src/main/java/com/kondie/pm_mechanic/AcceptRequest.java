@@ -102,28 +102,15 @@ public class AcceptRequest extends AsyncTask<String, Void, String> {
             if (s.equalsIgnoreCase("congrats")){
                 Toast.makeText(MainActivity.activity, "Request accepted", Toast.LENGTH_SHORT).show();
 
-                JSONArray ja;
-                if (prefs.getString("status", "").equals("free")){
-                    ja = new JSONArray();
-                }
-                else {
-                    ja = new JSONArray(prefs.getString("requests", ""));
-                }
-                JSONObject jo = new JSONObject();
+                editor.putString("requestId", requestId);
+                editor.putString("userEmail", userEmail);
+                editor.putFloat("userLat", Float.valueOf(userLat));
+                editor.putFloat("userLng", Float.valueOf(userLng));
+                editor.putString("userImagePath", userImagePath);
+                editor.putString("userPhone", userPhone);
 
-                jo.put("requestId", requestId);
-                jo.put("userEmail", userEmail);
-                jo.put("userLat", Float.valueOf(userLat));
-                jo.put("userLng", Float.valueOf(userLng));
-                jo.put("userImagePath", userImagePath);
-                jo.put("userPhone", userPhone);
-
-                ja.put(jo);
-
-                editor.putString("requests", ja.toString());
                 editor.putString("status", "busy");
                 editor.commit();
-//                CastReceiver.setAlarm(MainActivity.activity);
                 new GetRequests().execute(MainActivity.latestRequestDate);
             }
 

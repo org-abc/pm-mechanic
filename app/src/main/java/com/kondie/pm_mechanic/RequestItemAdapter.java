@@ -93,15 +93,20 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemHolder> 
             holder.makeAndModel.setText(item.getMakeAndModel());
             holder.hStatus.setText(item.getStatus());
 
+            SharedPreferences.Editor editor = prefs.edit();
             if (item.getStatus().equalsIgnoreCase("waiting")) {
                 holder.acceptButt.setText("Accept");
+                editor.putString("status", "free");
             }
             else if (item.getStatus().equalsIgnoreCase("accept")) {
                 holder.acceptButt.setText("Arrived");
+                editor.putString("status", "busy");
             }
             else if (item.getStatus().equalsIgnoreCase("arrived")){
                 holder.acceptButt.setText("Done");
+                editor.putString("status", "busy");
             }
+            editor.commit();
             Picasso.with(MainActivity.activity).load(item.getImagePath().replace(Constants.WRONG_PART, Constants.CORRECT_PART)).placeholder(R.drawable.user_icon).into(holder.clientDp);
 
         }catch (Exception e){

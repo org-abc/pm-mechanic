@@ -327,11 +327,11 @@ public class MainActivity extends AppCompatActivity
             public void onSuccess(Location location) {
                 if (location != null) {
                     userLocation = location;
-                    CastReceiver.setAlarm(MainActivity.activity);
                     if (requestItems.size() == 0) {
                         if (prefs.getString("accStatus", "").equals("active")) {
                             if (userLocation != null) {
                                 new GetRequests().execute(MainActivity.latestRequestDate);
+                                new UpdateLocation().execute();
                             }
                             else{
                                 setLocation();
@@ -480,6 +480,7 @@ public class MainActivity extends AppCompatActivity
         if (prefs.getString("accStatus", "").equals("active")) {
             if (userLocation != null) {
                 new GetRequests().execute(MainActivity.latestRequestDate);
+                new UpdateLocation().execute();
             }
         }
         else{

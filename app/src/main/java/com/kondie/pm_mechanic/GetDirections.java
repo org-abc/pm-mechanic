@@ -103,7 +103,6 @@ public class GetDirections extends AsyncTask <Float, Void, String> {
                 MainActivity.durationTxt.setText(RequestItemHolder.duration);
             }
             MainActivity.navGoogleMap.addPolyline(lineOptions);
-            CastReceiver.setAlarm(MainActivity.activity);
 
         }catch (Exception e){
 //            Toast.makeText(MainActivity.activity, s + e.toString(), Toast.LENGTH_SHORT).show();

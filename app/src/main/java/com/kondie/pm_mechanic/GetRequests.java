@@ -103,6 +103,11 @@ public class GetRequests extends AsyncTask<String, Void, String> {
 
             MainActivity.requestItems.clear();
 
+            if (reqsArr.length() == 0){
+                editor.putString("status", "free");
+                editor.commit();
+            }
+
             for(int c=0; c<reqsArr.length(); c++){
 
                 RequestItem item = new RequestItem();

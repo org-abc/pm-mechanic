@@ -1,10 +1,10 @@
 package com.kondie.pm_mechanic;
 
-import android.app.IntentService;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -18,39 +18,18 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import androidx.annotation.Nullable;
-import androidx.legacy.content.WakefulBroadcastReceiver;
+public class UpdateLocation extends AsyncTask<String, Void, String> {
 
-/**
- * Created by kondie on 2018/02/12.
- */
-
-public class UpdateLocationService extends IntentService {
-
-    private static final String ACTION_START_UPDATE = "ACTION_START_UPDATE";
     SharedPreferences prefs;
-
-    public UpdateLocationService() {
-        super(UpdateLocationService.class.getSimpleName());
-    }
+    private static boolean isLoading = false;
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-
+    protected String doInBackground(String... strings) {
         try {
-            String action = intent.getAction();
-
-            if (action.equals(ACTION_START_UPDATE)) {
-                startLocUpdate();
+            if (isLoading){
+                return "loading";
             }
-        }finally {
-            WakefulBroadcastReceiver.completeWakefulIntent(intent);
-        }
-    }
-
-    private void startLocUpdate(){
-
-        try {
+            isLoading = true;
             prefs = MainActivity.activity.getSharedPreferences("PM_M", Context.MODE_PRIVATE);
             URL url = new URL(Constants.PM_HOSTING_WEBSITE + "/updateMechanicLoc.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -84,24 +63,31 @@ public class UpdateLocationService extends IntentService {
                 }
                 inStream.close();
 
-                if (!result.equals("null")) {
-                    JSONObject locOb = new JSONObject(result.toString());
-                    MainActivity.clientLat = (float) locOb.getDouble("lat");
-                    MainActivity.clientLng = (float) locOb.getDouble("lng");
-                    MainActivity.updateLoc();
-                }
+                return result.toString();
             } else {
-//                Toast.makeText(this, "conn problems", Toast.LENGTH_SHORT).show();
+                return "conn problems";
             }
 
         } catch (Exception e) {
-//            Toast.makeText(this, "Here: " + e.toString(), Toast.LENGTH_SHORT).show();
+            return e.toString();
         }
     }
 
-    public static Intent createUpdateIntent(Context context){
-        Intent intent = new Intent(context, UpdateLocationService.class);
-        intent.setAction(ACTION_START_UPDATE);
-        return intent;
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        int delayTime = 54000000;
+        if (prefs.getString("status", "").equalsIgnoreCase("busy")){
+            delayTime = 10000;
+        }
+        if (!s.equalsIgnoreCase("loading")) {
+            isLoading = false;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    new UpdateLocation().execute();
+                }
+            }, delayTime);
+        }
     }
 }
