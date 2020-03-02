@@ -96,14 +96,17 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemHolder> 
             SharedPreferences.Editor editor = prefs.edit();
             if (item.getStatus().equalsIgnoreCase("waiting")) {
                 holder.acceptButt.setText("Accept");
+                MainActivity.locationRequest.setInterval(54000000);
                 editor.putString("status", "free");
             }
             else if (item.getStatus().equalsIgnoreCase("accept")) {
                 holder.acceptButt.setText("Arrived");
+                MainActivity.locationRequest.setInterval(10000);
                 editor.putString("status", "busy");
             }
             else if (item.getStatus().equalsIgnoreCase("arrived")){
                 holder.acceptButt.setText("Done");
+                MainActivity.locationRequest.setInterval(10000);
                 editor.putString("status", "busy");
             }
             editor.commit();

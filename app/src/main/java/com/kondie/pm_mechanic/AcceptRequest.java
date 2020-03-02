@@ -111,6 +111,7 @@ public class AcceptRequest extends AsyncTask<String, Void, String> {
 
                 editor.putString("status", "busy");
                 editor.commit();
+                MainActivity.locationRequest.setInterval(10000);
                 new GetRequests().execute(MainActivity.latestRequestDate);
             }
 

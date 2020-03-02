@@ -17,6 +17,7 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
@@ -35,7 +36,9 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
@@ -116,6 +119,8 @@ public class MainActivity extends AppCompatActivity
     public static String lastHistoryDate = "5050-00-00 00:00:00";
     public static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
     public static List<HistoryItem> historyItems;
+    public static LocationRequest locationRequest;
+    private LocationCallback locationCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -322,6 +327,26 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        int intervalTime = 54000000;
+        if (prefs.getString("status", "").equalsIgnoreCase("busy")){
+            intervalTime = 10000;
+        }
+        locationRequest.setInterval(intervalTime);
+        locationCallback = new LocationCallback(){
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult != null){
+                    for (Location location : locationResult.getLocations()){
+                        if (location != null){
+                            userLocation = location;
+                        }
+                    }
+                }
+            }
+        };
+        mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
         mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
