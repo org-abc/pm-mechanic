@@ -9,7 +9,9 @@
     <string name="pm_email">www.kondie@live.com</string>
     <string name="channel_description">my first channel</string>
     <string name="channel_name">Channel one</string>
-    <string name="about_pm">This is ...</string>
+    <string name="about_pm">
+        Make extra money as a mechanic.\n\nPM Mechanic the app for mechanics\n-Turn your extra time into money as a mechanic with the new Mechanics app.\n\nWhy Us?\n- We are the first in africa.\n- Work at your own time.\n- No offices, no bosses.\n- You charge at your own rate.\n- Enjoy fast customer support.\n\nPM\'s mission is to bring fast and accessible mechanics to drivers and also look out for their safety, while helping thousands of mechanics support their families and also reduce the unemployment rate.
+    </string>
     <string name="app_name">PM-mechanic</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
